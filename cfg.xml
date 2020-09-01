@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Grandstream XML Provisioning Configuration -->
+<gs_provision version="1">
+  <config version="1">
+  
+    <!-- Admin Password (Type: string, Max length is 32) -->
+    <P2>PASSWORD</P2>
+	
+	<!-- GDSManager Configuration Password (Type: string, Max length is 32) -->
+	<P15505>PASSWORD</P15505>
+  
+    <!-- Central Mode (0:disable 1:Enable) -->
+    <P15301>1</P15301>
+
+	<!-- Digital Input 1 (0:Disable 1:Alarm Input 2:Open Door) -->
+	<P14320>2</P14320>
+
+
+    <!-- Remote PIN to Open the Door -->
+    <P10457>1</P10457>
+	
+    <!-- Enable HTTP API Remote Open Door (0:Disable  1:Enable) -->
+    <P15424>1</P15424>
+	
+    <!-- Enable DTMF Open Door (0:Disable  1:Enable) -->
+    <P14858>1</P14858>
+
+
+    <!-- Unlock Holding Time(s) (value: 1-20) -->
+    <P14101>10</P14101>
+
+
+
+    <!-- Time Zone -->
+    <P64>9</P64>
+    <!-- Allow DHCP Option 42 to override NTP server (0:Disable  1:Enabel) -->
+    <P144>0</P144>
+    <!-- Enable Daylight Saving Time (0:Disable  1:Enable) -->
+    <P10004>1</P10004>
+
+    <!-- Enable NTP (0:Disable  1:Enable) -->
+    <P5006>1</P5006>
+    <!-- NTP Server (type:string maxlength:255) -->
+    <P30>pool.ntp.org</P30>
+    <!-- DST -->
+    <P10005>GMT+05:00MDT+04:00,M3.2.0/02:00:00,M11.1.0/02:00:00</P10005>
+    <!-- Update Interval(m) (value:60~1440) -->
+    <P10006>1440</P10006>
+	
+	
+	
+    <!-- Firmware Upgrade Via (0:TFTP 1:HTTP 2:HTTPS) -->
+    <P6767>1</P6767>
+    <!-- Firmware Server Path -->
+    <P192>192.168.1.9:8081</P192>
+    <!-- Firmware HTTP/HTTPS User Name -->
+    <P6768></P6768>
+    <!-- Firmware File Prefix -->
+    <P232></P232>
+    <!-- Firmware File Postfix -->
+    <P233></P233>
+    <!-- Config Upgrade Via (0:TFTP 1:HTTP 2:HTTPS) -->
+    <P212>1</P212>
+    <!-- Config Server Path -->
+    <P237>192.168.1.9:8081</P237>
+    <!-- Config HTTP/HTTPS User Name -->
+    <P1360></P1360>
+    <!-- Config File Prefix -->
+    <P234></P234>
+    <!-- Config File Postfix -->
+    <P235></P235>
+    <!-- DHCP Option 66 Override Server (0:Disable  1:Enable) -->
+    <P145>1</P145>
+    <!-- Zero Config (0:Disable  1:Enable) -->
+    <P1414>0</P1414>
+    <!-- Enable DHCP Option 120 Override SIP Server (0:Disable  1:Enable) -->
+    <P1411>1</P1411>
+    <!-- Automatic Upgrade (0:Disable  1:check for xxx minute  2:check for every day  3: check for every week) -->
+    <P194>1</P194>
+    <!-- Automatic Upgrade Interval(m) (value:60~525600) -->
+    <P193>10080</P193>
+    <!-- Randomized Automatic Upgrade (0: Disable  1: Enable) -->
+    <P8458>0</P8458>
+    <!-- Hour of the Day Start Time (value: 0 - 23) -->
+    <P285>0</P285>
+    <!-- Hour of the Day End Time (value: 0 - 23) -->
+    <P8459>0</P8459>
+    <!-- Day of the Week (value: 0 - 6) -->
+    <P286>0</P286>
+    <!-- Validate Server Certificates (0:Disable  1:Enable default) -->
+    <P8463>0</P8463>
+	
+	
+
+
+  </config>
+</gs_provision>
