@@ -1,0 +1,18 @@
+[Unit]
+Description=APC alarm2door service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=alarm2door
+Type=simple
+Restart=always
+RestartSec=3
+User=pi
+ExecStart=/usr/bin/python3 -u /opt/alarm2door.py
+
+
+[Install]
+WantedBy=multi-user.target
