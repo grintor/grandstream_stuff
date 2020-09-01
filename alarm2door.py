@@ -74,6 +74,7 @@ def main():
 		if keep_doors_open:
 			p = Pool(len(endpoints))
 			p.map(openDoor, endpoints)
+			p.close()
 			time.sleep(sleep)
 		time.sleep(1)
 
