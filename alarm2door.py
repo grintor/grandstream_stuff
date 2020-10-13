@@ -5,6 +5,8 @@ import xml.etree.ElementTree as ET
 import time
 from multiprocessing.pool import ThreadPool as Pool
 import traceback
+import datetime
+import boto3
 
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -12,10 +14,19 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 # this is a systemd service for opening all the doors when the alarm goes off using a raspberry pin
 # it will hold the door open until the button is pressed to resume normal door function
 
-password = 'PASSWORD_HERE'
 username = 'admin'
-pin = '1'
+password = 'xxxxxxx'
+to_email = ['xxxxxxx@gmail.com'] # a list of emails
+from_email = 'alarm2door@xxxxxxx.com'
+AWS_ACCESS_KEY_ID = "xxxxxxx"
+AWS_SECRET_ACCESS_KEY = "xxxxxxxxxxxxx"
+
+pin = '1' # the grandstream device unlock security pin number
+site='gastro'
 sleep = 10 # equal the "Unlock Holding Time" in "Door System Settings"
+test_mode = True
+email_startup = True
+
 
 endpoints = [
 	'https://192.168.1.71',
@@ -61,6 +72,22 @@ endpoints = [
 close_button = Button(2) # pin 3
 open_button = Button(3) # pin 5
 
+sesClient = boto3.client( 'ses', 
+	aws_access_key_id=AWS_ACCESS_KEY_ID,
+	aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+	region_name='us-east-1' )
+
+if email_startup:
+	sesClient.send_email(
+				Source = from_email,
+				Destination={'ToAddresses': to_email},
+				Message={	'Body': {
+								'Text': {'Data': "The service was started at %s.\nclose-trigger engaged: %s\nopen-trigger engaged: %s" % (datetime.datetime.now(), close_button.is_pressed, open_button.is_pressed)},
+							},
+							'Subject': {'Data': "ALARM2DOOR: service started" }
+						}
+			)
+
 keep_doors_open = False
 
 def main():
@@ -71,7 +98,7 @@ def main():
 	open_button.when_pressed = open_doors
 
 	while True:
-		if keep_doors_open:
+		if keep_doors_open and not test_mode:
 			p = Pool(len(endpoints))
 			p.map(openDoor, endpoints)
 			p.close()
@@ -109,14 +136,31 @@ def openDoor(endpoint):
 	except:
 		print ("%s\n%s" % (endpoint, traceback.format_exc()))
 
+def emailNotify(state):
+	try:
+		sesClient.send_email(
+					Source = from_email,
+					Destination={'ToAddresses': to_email},
+					Message={	'Body': {
+									'Text': {'Data': "The alarm at %s was toggled at %s the doors are now %s. (this_is_just_a_drill=%s)" % (site, datetime.datetime.now(), state, test_mode)},
+								},
+								'Subject': {'Data': "ALARM2DOOR: %s doors %s" % (site, state)}
+							}
+				)
+	except Exception as e:
+		print("Exception in emailNotify(): " + e)
+
 def open_doors():
 	global keep_doors_open
 	keep_doors_open = True
+	print("open_doors() triggered")
+	emailNotify('unlocked')
 
 def close_doors():
 	global keep_doors_open
 	keep_doors_open = False
-
+	print("close_doors() triggered")
+	emailNotify('locked')
 
 if __name__ == '__main__':
 	main()
